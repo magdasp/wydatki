@@ -1,0 +1,142 @@
+<mat-card>
+  <mat-card-title>{{title}}</mat-card-title><br>
+  <mat-card-content>
+    <form [formGroup]="expensesForm">
+      <mat-form-field [floatLabel]="'always'" class="form-field">
+        <mat-label>Opłaty</mat-label>
+        <input matInput type="number" formControlName="fees" [min]="0" [max]="2147483647">
+      </mat-form-field>
+      <mat-form-field [floatLabel]="'always'" class="form-field">
+        <mat-label>Jedzenie</mat-label>
+        <input matInput type="number" formControlName="food" [min]="0" [max]="2147483647">
+      </mat-form-field>
+      <mat-form-field [floatLabel]="'always'" class="form-field">
+        <mat-label>Chemia</mat-label>
+        <input matInput type="number" formControlName="chemistry" [min]="0" [max]="2147483647">
+      </mat-form-field>
+      <mat-form-field [floatLabel]="'always'" class="form-field">
+        <mat-label>Ubrania</mat-label>
+        <input matInput type="number" formControlName="clothes" [min]="0" [max]="2147483647">
+      </mat-form-field>
+      <mat-form-field [floatLabel]="'always'" class="form-field">
+        <mat-label>Leczenie</mat-label>
+        <input matInput type="number" formControlName="treatment" [min]="0" [max]="2147483647">
+      </mat-form-field>
+      <mat-form-field [floatLabel]="'always'" class="form-field">
+        <mat-label>Transport</mat-label>
+        <input matInput type="number" formControlName="transport" [min]="0" [max]="2147483647">
+      </mat-form-field>
+      <mat-form-field [floatLabel]="'always'" class="form-field">
+        <mat-label>Dom</mat-label>
+        <input matInput type="number" formControlName="house" [min]="0" [max]="2147483647">
+      </mat-form-field>
+      <mat-form-field [floatLabel]="'always'" class="form-field">
+        <mat-label>Inne</mat-label>
+        <input matInput type="number" formControlName="another" [min]="0" [max]="2147483647">
+      </mat-form-field>
+    </form>
+    <mat-card-actions>
+      <span [hidden]="isHiddenAdd">
+        <button mat-flat-button (click)="addExpense()" [disabled]='!expensesForm.valid' matTooltip="Dopisz do listy wydatków" matTooltipClass="matTooltip-big">
+          <mat-icon>add</mat-icon>
+          <span>Dopisz</span>
+        </button>
+        <button mat-flat-button color="accent" (click)="clear()" matTooltip="Wyczyść formularz" matTooltipClass="matTooltip-big">
+          <mat-icon>clear</mat-icon>
+            <span>Wyczyść</span>
+        </button>
+      </span>
+      <span [hidden]="!isHiddenAdd">
+        <button mat-flat-button (click)="saveExpense()" [disabled]='!expensesForm.valid' matTooltip="Zapisz do listy wydatków" matTooltipClass="matTooltip-big">
+          <mat-icon>edit</mat-icon>
+          <span>Zapisz</span>
+        </button>
+        <button mat-flat-button color="accent" (click)="cancel()" matTooltip="Anuluj edycję" matTooltipClass="matTooltip-big">
+          <mat-icon>clear</mat-icon>
+          <span>Anuluj</span>
+        </button>
+      </span>
+    </mat-card-actions>
+  </mat-card-content>
+</mat-card>
+<mat-card>
+  <mat-card-actions align="end">
+    <button mat-flat-button (click)="exportXls()" matTooltip="Zapisz dane do pliku xslx" matTooltipClass="matTooltip-big">
+      Zapisz do xlsx
+    </button>
+    <label for="file-upload" class="custom-file-upload" matTooltip="Załaduj dane z pliku xlsx" matTooltipClass="matTooltip-big">
+      <span>Wybierz plik xlsx</span>
+    </label>
+    <input id="file-upload" type="file" accept=".xls,.xlsx" (change)="onFileChange($event)">
+  </mat-card-actions>
+  <mat-card-title>{{titleList}}</mat-card-title><br>
+  <mat-card-content>
+    <mat-table #table [dataSource]="dataSource">
+      <ng-container matColumnDef="fees">
+        <mat-header-cell *matHeaderCellDef> Opłaty </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.fees }} </mat-cell>
+        <mat-footer-cell *matFooterCellDef>{{ sumFees() }}</mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="food">
+        <mat-header-cell *matHeaderCellDef> Jedzenie </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.food }} </mat-cell>
+        <mat-footer-cell *matFooterCellDef>{{ sumFood() }}</mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="chemistry">
+        <mat-header-cell *matHeaderCellDef> Chemia </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.chemistry }} </mat-cell>
+        <mat-footer-cell *matFooterCellDef>{{ sumChemistry() }}</mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="clothes">
+        <mat-header-cell *matHeaderCellDef> Ubrania </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.clothes }} </mat-cell>
+        <mat-footer-cell *matFooterCellDef>{{ sumClothes() }}</mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="treatment">
+        <mat-header-cell *matHeaderCellDef> Leczenie </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.treatment }} </mat-cell>
+        <mat-footer-cell *matFooterCellDef>{{ sumTreatment() }}</mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="transport">
+        <mat-header-cell *matHeaderCellDef> Transport </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.transport }} </mat-cell>
+        <mat-footer-cell *matFooterCellDef>{{ sumTransport() }}</mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="house">
+        <mat-header-cell *matHeaderCellDef> Dom </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.house }} </mat-cell>
+        <mat-footer-cell *matFooterCellDef>{{ sumHouse() }}</mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="another">
+        <mat-header-cell *matHeaderCellDef> Inne </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.another }} </mat-cell>
+        <mat-footer-cell *matFooterCellDef>{{ sumAnother() }}</mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button type="button" mat-button color="primary" (click)="deleteExpense(element)">
+            <mat-icon matTooltip="Usuń wiersz" matTooltipClass="matTooltip-big">delete_outline</mat-icon>
+          </button>
+        </mat-cell>
+        <mat-footer-cell *matFooterCellDef>Suma</mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button type="button" mat-button color="primary" (click)="editExpense(element)">
+            <mat-icon matTooltip="Edytuj wiersz" matTooltipClass="matTooltip-big">edit</mat-icon>
+          </button>
+        </mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let element; columns: displayedColumns;"></mat-row>
+      <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
+
+    </mat-table>
+  </mat-card-content>
+</mat-card>

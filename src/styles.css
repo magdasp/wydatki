@@ -1,1 +1,76 @@
 /* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-toolbar {
+  font-size: 50px;
+  font-weight: bold;
+  justify-content: center;
+}
+
+.mat-card {
+  background: lightyellow;
+  margin-top: 1%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 1%;
+}
+
+.mat-flat-button {
+  background: darkgoldenrod;
+  color: white;
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  background: darkgoldenrod;
+  color: white;
+  font-weight: 500;
+  border: 0px;
+  border-radius: 5px;
+  padding: 8px 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.form-field {
+  width: 9%;
+  margin-left: 20px;
+}
+
+.mat-footer-cell {
+  background-color: #F5E6B4;
+}
+
+input[type="number"] {
+  text-align: right;
+}
+
+.mat-header-cell {
+  justify-content: right;
+  font-size: 13px;
+}
+
+.mat-cell {
+  justify-content: right;
+}
+
+.mat-footer-cell {
+  justify-content: right;
+}
+
+.matTooltip-big {
+  background-color: lightgray !important;
+  font-size: 15px !important;
+  color: #4106A7 !important;
+  border: 1px solid gray; 
+}
+

@@ -139,6 +139,7 @@ export class BodyComponent implements OnInit {
     this.excelService.readFromExcelFile(target).subscribe(e => {
       this.expenses = e;
       this.dataSource = new MatTableDataSource(this.expenses);
+      this.cancel();
     });
   }
 

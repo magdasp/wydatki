@@ -28,7 +28,10 @@ public exportAsExcelFile(json: any[], excelFileName: string): void {
 private saveAsExcelFile(buffer: any, fileName: string): void {
    const data: Blob = new Blob([buffer], {type: EXCEL_TYPE});
 
-   FileSaver.saveAs(data, fileName + '_' + new Date().getFullYear() + new  Date().getMonth() + EXCEL_EXTENSION);
+   let dateYear = new Date().getFullYear().toString();
+   let dateMonth = ('0' + (new Date().getMonth() + 1).toString()).slice(-2);
+
+   FileSaver.saveAs(data, fileName + '_' + dateYear + dateMonth + EXCEL_EXTENSION);
 }
 
 
